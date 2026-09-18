@@ -1,0 +1,313 @@
+:root {
+  --scale: 0.8;
+  --font-size-body: calc(17px * var(--scale));
+  --font-size-meta: calc(17px * var(--scale));
+  --parchment: #f4ecd8;
+  --ink: #3d342c;
+  --ink-faded: rgba(61, 52, 44, 0.72);
+  --page-bg: #e8dfd0;
+  --card-padding-inline: calc(40px * var(--scale));
+  --card-padding-bottom: calc(40px * var(--scale));
+  --flower-wrap-width: calc(420px * var(--scale));
+  --flower-wrap-height: calc(556px * var(--scale));
+  --border-width: calc(1px * var(--scale));
+  --effects-chip-padding-inline: calc(14px * var(--scale));
+  --svg-extra-scale: 1.1;
+}
+
+body {
+  margin: 0;
+  background: var(--page-bg);
+}
+
+.gallery {
+  display: flex;
+  gap: calc(32px * var(--scale));
+  padding: calc(32px * var(--scale));
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  min-height: 100vh;
+  box-sizing: border-box;
+  align-items: flex-start;
+}
+
+.strain-card {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+.box {
+  position: relative;
+  width: calc(500px * var(--scale));
+  height: calc(900px * var(--scale));
+  box-sizing: border-box;
+  border: var(--border-width) solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  padding: calc(48px * var(--scale)) var(--card-padding-inline) var(--card-padding-bottom);
+  background-color: var(--parchment);
+  background-image:
+    radial-gradient(ellipse at 20% 30%, rgba(139, 90, 43, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(139, 90, 43, 0.05) 0%, transparent 40%);
+  box-shadow: inset 0 0 calc(40px * var(--scale)) rgba(139, 90, 43, 0.08);
+  color: var(--ink);
+}
+
+.graphic {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 0;
+  overflow: visible;
+  padding-bottom: calc(4px * var(--scale));
+  position: relative;
+  z-index: 1;
+}
+
+.flower-wrap {
+  position: relative;
+  width: var(--flower-wrap-width);
+  height: var(--flower-wrap-height);
+  overflow: visible;
+  transform: translateY(calc(-16px * var(--scale)));
+}
+
+/* Main artwork: line-art SVG (ink paths only, no solid fill) */
+.svg-combined {
+  position: absolute;
+  top: calc(30px * var(--scale));
+  left: 50%;
+  width: calc((100% + 2 * var(--effects-chip-padding-inline)) / var(--svg-extra-scale));
+  height: auto;
+  max-width: none;
+  object-fit: contain;
+  object-position: center top;
+  transform: translateX(-50%) scale(var(--svg-extra-scale));
+  transform-origin: center top;
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Leader lines from labels toward pie centers */
+.diagram-leader {
+  stroke: var(--ink);
+  stroke-width: calc(2px * var(--scale));
+  stroke-opacity: 0.65;
+  vector-effect: non-scaling-stroke;
+  shape-rendering: geometricPrecision;
+}
+
+.diagram-label-bg {
+  fill: var(--parchment);
+  stroke: var(--ink-faded);
+  stroke-width: calc(2px * var(--scale));
+  vector-effect: non-scaling-stroke;
+  shape-rendering: geometricPrecision;
+}
+
+.diagram-label {
+  font-family: "EB Garamond", Garamond, serif;
+  font-size: var(--font-size-body);
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  fill: var(--ink);
+}
+
+.chart-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.chart-overlay path[data-chem] {
+  pointer-events: auto;
+}
+
+.chart-tooltip {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1000;
+  font-family: "EB Garamond", Garamond, serif;
+  font-size: var(--font-size-meta);
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  max-width: calc(280px * var(--scale));
+  background: var(--parchment);
+  border: var(--border-width) solid var(--ink);
+  padding: calc(8px * var(--scale)) calc(14px * var(--scale));
+  box-shadow: 0 calc(2px * var(--scale)) calc(8px * var(--scale)) rgba(61, 52, 44, 0.12);
+}
+
+.chart-tooltip-rule {
+  border-top: var(--border-width) solid var(--ink);
+  margin: calc(6px * var(--scale)) 0;
+}
+
+.info {
+  flex-shrink: 0;
+  margin-top: calc(12px * var(--scale));
+  position: relative;
+  z-index: 2;
+}
+
+.product-name {
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  font-style: italic;
+  font-size: calc(35px * var(--scale));
+  line-height: 1.1;
+  margin-bottom: calc(10px * var(--scale));
+  color: var(--ink);
+}
+
+.effects-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(calc(56px * var(--scale)), 0.58fr) minmax(0, 1.42fr);
+  gap: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  font-family: "EB Garamond", Garamond, serif;
+  font-size: var(--font-size-body);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink);
+  border-bottom: var(--border-width) solid var(--ink);
+}
+
+.effects-header-name,
+.effects-header-scent,
+.effects-header-effect {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-block: calc(8px * var(--scale));
+}
+
+.effects-header-name,
+.effects-header-scent {
+  border-right: var(--border-width) solid var(--ink);
+}
+
+.effects-header-name {
+  padding-inline: var(--effects-chip-padding-inline) calc(8px * var(--scale));
+}
+
+.effects-header-scent {
+  padding-inline: calc(8px * var(--scale));
+}
+
+.effects-header-effect {
+  padding-inline: calc(8px * var(--scale)) var(--effects-chip-padding-inline);
+}
+
+.card-header {
+  position: absolute;
+  top: var(--card-padding-bottom);
+  left: var(--card-padding-inline);
+  right: var(--card-padding-inline);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: calc(12px * var(--scale));
+}
+
+.card-meta {
+  font-family: "EB Garamond", Garamond, serif;
+  font-size: var(--font-size-body);
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.product-totals {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.product-index {
+  flex-shrink: 0;
+}
+
+.effects {
+  background: transparent;
+  border: var(--border-width) solid var(--ink);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: calc(100% + 2 * var(--effects-chip-padding-inline));
+  margin-inline: calc(-1 * var(--effects-chip-padding-inline));
+}
+
+.terpene-chip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(calc(56px * var(--scale)), 0.58fr) minmax(0, 1.42fr);
+  gap: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  font-family: "EB Garamond", Garamond, serif;
+  font-size: var(--font-size-meta);
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--ink);
+  border-bottom: var(--border-width) solid var(--ink);
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+}
+
+.terpene-chip.is-active {
+  z-index: 1;
+  box-shadow: inset 0 0 0 calc(2px * var(--scale)) var(--ink-faded);
+}
+
+.terpene-chip-name,
+.terpene-chip-flavor,
+.terpene-chip-effect {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-block: calc(8px * var(--scale));
+}
+
+.terpene-chip-name {
+  padding-inline: var(--effects-chip-padding-inline) calc(8px * var(--scale));
+  border-right: var(--border-width) solid var(--ink);
+}
+
+.terpene-chip-flavor {
+  padding-inline: calc(8px * var(--scale));
+  border-right: var(--border-width) solid var(--ink);
+}
+
+.terpene-chip-effect {
+  padding-inline: calc(8px * var(--scale)) var(--effects-chip-padding-inline);
+}
+
+.terpene-chip:last-child {
+  border-bottom: none;
+}
+
+.terpene-chip[data-tone='dark'] {
+  color: var(--parchment);
+}

@@ -1,0 +1,20 @@
+chemical,category,common_name,flavor,scent,effect_1,effect_2
+alpha-bisabolol,terpene,Bisabolol,floral,chamomile,anti-inflammatory,calming
+alpha-humulene,terpene,Humulene,earthy,hoppy,anti-inflammatory,appetite-suppressant
+alpha-phellandrene,terpene,Phellandrene,minty,woody,antidepressant,analgesic
+alpha-pinene,terpene,Alpha-Pinene,piney,fresh,alertness,memory-aid
+beta-caryophyllene,terpene,Caryophyllene,peppery,spicy,anti-inflammatory,analgesic
+beta-myrcene,terpene,Myrcene,earthy,musky,sleep,muscle-relaxant
+beta-pinene,terpene,Beta-Pinene,herbal,piney,alertness,bronchodilator
+caryophyllene-oxide,terpene,Caryophyllene Oxide,woody,dry,anti-inflammatory,analgesic
+cis-beta-ocimene,terpene,Cis-beta-Ocimene,sweet,herbal,anti-inflammatory,decongestant
+d-limonene,terpene,Limonene,citrus,lemon,mood-elevating,anti-anxiety
+eucalyptol,terpene,Eucalyptol,minty,cooling,anti-inflammatory,decongestant
+fenchol,terpene,Fenchol,sweet,herbal,antioxidant,anti-anxiety
+guaiol,terpene,Guaiol,piney,floral,anti-inflammatory,antioxidant
+linalool,terpene,Linalool,floral,lavender,anxiolytic,sleep
+terpineol,terpene,Terpineol,floral,lilac,sleep,antioxidant
+terpinolene,terpene,Terpinolene,piney,floral,uplifting,sleep
+trans-beta-farnesene,terpene,Farnesene,fruity,green-apple,anti-inflammatory,mood-elevating
+trans-beta-ocimene,terpene,Trans-beta-Ocimene,sweet,herbal,anti-inflammatory,decongestant
+valencene,terpene,Valencene,citrus,orange,anti-inflammatory,antioxidant

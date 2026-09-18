@@ -1,0 +1,104 @@
+:root {
+  /* Cannabinoids — green ramp */
+  /* Acidic precursors */
+  --chem-c-thca:         #0f5232;
+  --chem-c-cbda:         #1a7a45;
+  --chem-c-cbga:         #6db82e;
+  /* Neutral / active */
+  --chem-c-cbd:          #2ba55f;
+  --chem-c-cbg:          #56c47a;
+  --chem-c-cbc:          #a3d400;
+  --chem-c-thcv:         #c9ff00;
+  --chem-c-d9thc:        #deff6e;
+  --chem-c-cbn:          #c6f4a0;
+
+  /* Terpenes — earthy / woody */
+  --chem-t-bcary:        #182957;
+  --chem-t-caryox:       #1e3d80;
+  --chem-t-humulene:     #2e56b0;
+  --chem-t-guaiol:       #5b80d4;
+  --chem-t-farnesene:    #8faee8;
+  /* Terpenes — fresh / piney / citrus */
+  --chem-t-apinene:      #7b72e8;
+  --chem-t-bpinene:      #9b94f7;
+  --chem-t-myrcene:      #bbb6ff;
+  --chem-t-limonene:     #d4d0ff;
+  --chem-t-terpinolene:  #e8e6ff;
+  --chem-t-aphellandrene:#c8d8f8;
+  --chem-t-fenchol:      #dce8fb;
+  --chem-t-eucalyptol:   #eef4fd;
+  --chem-t-valencene:    #b8d4f0;
+  /* Terpenes — floral / sweet */
+  --chem-t-linalool:     #e87ae2;
+  --chem-t-terpineol:    #f4a0ef;
+  --chem-t-bisabolol:    #fcc3f9;
+  --chem-t-cisocimene:   #f8ddf7;
+  --chem-t-transocimene: #ead4f8;
+}
+
+.chart-overlay path[data-chem] {
+  fill: var(--chem-t-myrcene);
+  stroke: none;
+  filter: saturate(0.58);
+}
+
+.chart-overlay path[data-chem='thca']                { fill: var(--chem-c-thca); }
+.chart-overlay path[data-chem='cbda']                { fill: var(--chem-c-cbda); }
+.chart-overlay path[data-chem='cbga']                { fill: var(--chem-c-cbga); }
+.chart-overlay path[data-chem='cbd']                 { fill: var(--chem-c-cbd); }
+.chart-overlay path[data-chem='cbg']                 { fill: var(--chem-c-cbg); }
+.chart-overlay path[data-chem='cbc']                 { fill: var(--chem-c-cbc); }
+.chart-overlay path[data-chem='thcv']                { fill: var(--chem-c-thcv); }
+.chart-overlay path[data-chem='delta-9-thc']         { fill: var(--chem-c-d9thc); }
+.chart-overlay path[data-chem='cbn']                 { fill: var(--chem-c-cbn); }
+
+.chart-overlay path[data-chem='beta-caryophyllene']  { fill: var(--chem-t-bcary); }
+.chart-overlay path[data-chem='caryophyllene-oxide'] { fill: var(--chem-t-caryox); }
+.chart-overlay path[data-chem='alpha-humulene']      { fill: var(--chem-t-humulene); }
+.chart-overlay path[data-chem='guaiol']              { fill: var(--chem-t-guaiol); }
+.chart-overlay path[data-chem='trans-beta-farnesene']{ fill: var(--chem-t-farnesene); }
+.chart-overlay path[data-chem='alpha-pinene']        { fill: var(--chem-t-apinene); }
+.chart-overlay path[data-chem='beta-pinene']         { fill: var(--chem-t-bpinene); }
+.chart-overlay path[data-chem='beta-myrcene']        { fill: var(--chem-t-myrcene); }
+.chart-overlay path[data-chem='d-limonene']          { fill: var(--chem-t-limonene); }
+.chart-overlay path[data-chem='terpinolene']         { fill: var(--chem-t-terpinolene); }
+.chart-overlay path[data-chem='alpha-phellandrene']  { fill: var(--chem-t-aphellandrene); }
+.chart-overlay path[data-chem='fenchol']             { fill: var(--chem-t-fenchol); }
+.chart-overlay path[data-chem='eucalyptol']          { fill: var(--chem-t-eucalyptol); }
+.chart-overlay path[data-chem='valencene']           { fill: var(--chem-t-valencene); }
+.chart-overlay path[data-chem='linalool']            { fill: var(--chem-t-linalool); }
+.chart-overlay path[data-chem='terpineol']           { fill: var(--chem-t-terpineol); }
+.chart-overlay path[data-chem='alpha-bisabolol']     { fill: var(--chem-t-bisabolol); }
+.chart-overlay path[data-chem='cis-beta-ocimene']    { fill: var(--chem-t-cisocimene); }
+.chart-overlay path[data-chem='trans-beta-ocimene']  { fill: var(--chem-t-transocimene); }
+
+.terpene-chip[data-chem] {
+  filter: saturate(0.58);
+}
+
+.terpene-chip[data-chem='beta-caryophyllene']  { background: var(--chem-t-bcary); }
+.terpene-chip[data-chem='caryophyllene-oxide'] { background: var(--chem-t-caryox); }
+.terpene-chip[data-chem='alpha-humulene']      { background: var(--chem-t-humulene); }
+.terpene-chip[data-chem='guaiol']              { background: var(--chem-t-guaiol); }
+.terpene-chip[data-chem='trans-beta-farnesene']{ background: var(--chem-t-farnesene); }
+.terpene-chip[data-chem='alpha-pinene']        { background: var(--chem-t-apinene); }
+.terpene-chip[data-chem='beta-pinene']         { background: var(--chem-t-bpinene); }
+.terpene-chip[data-chem='beta-myrcene']        { background: var(--chem-t-myrcene); }
+.terpene-chip[data-chem='d-limonene']          { background: var(--chem-t-limonene); }
+.terpene-chip[data-chem='terpinolene']         { background: var(--chem-t-terpinolene); }
+.terpene-chip[data-chem='alpha-phellandrene']  { background: var(--chem-t-aphellandrene); }
+.terpene-chip[data-chem='fenchol']             { background: var(--chem-t-fenchol); }
+.terpene-chip[data-chem='eucalyptol']          { background: var(--chem-t-eucalyptol); }
+.terpene-chip[data-chem='valencene']           { background: var(--chem-t-valencene); }
+.terpene-chip[data-chem='linalool']            { background: var(--chem-t-linalool); }
+.terpene-chip[data-chem='terpineol']           { background: var(--chem-t-terpineol); }
+.terpene-chip[data-chem='alpha-bisabolol']     { background: var(--chem-t-bisabolol); }
+.terpene-chip[data-chem='cis-beta-ocimene']    { background: var(--chem-t-cisocimene); }
+.terpene-chip[data-chem='trans-beta-ocimene']  { background: var(--chem-t-transocimene); }
+
+.chart-overlay path[data-chem].is-active {
+  stroke: var(--ink-faded);
+  stroke-width: calc(2px * var(--scale));
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+}

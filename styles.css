@@ -13,6 +13,7 @@
   --border-width: calc(1px * var(--scale));
   --effects-chip-padding-inline: calc(14px * var(--scale));
   --svg-extra-scale: 1.1;
+  --product-description-space: calc((var(--font-size-body) * 1.35 * 3) + (12px * var(--scale)));
 }
 
 body {
@@ -21,21 +22,14 @@ body {
 }
 
 .gallery {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, calc(500px * var(--scale)));
   gap: calc(32px * var(--scale));
   padding: calc(32px * var(--scale));
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
+  justify-content: center;
   min-height: 100vh;
   box-sizing: border-box;
-  align-items: flex-start;
-}
-
-.strain-card {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
+  align-items: start;
 }
 
 .box {
@@ -53,6 +47,10 @@ body {
     radial-gradient(ellipse at 80% 70%, rgba(139, 90, 43, 0.05) 0%, transparent 40%);
   box-shadow: inset 0 0 calc(40px * var(--scale)) rgba(139, 90, 43, 0.08);
   color: var(--ink);
+}
+
+.box:has(.product-description:not(:empty)) {
+  height: calc(900px * var(--scale) + var(--product-description-space));
 }
 
 .graphic {
@@ -171,7 +169,40 @@ body {
   color: var(--ink);
 }
 
+.product-description {
+  margin: 0 0 calc(12px * var(--scale));
+  font-family: "EB Garamond", Garamond, serif;
+  font-size: var(--font-size-body);
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.product-description:empty {
+  display: none;
+}
+
+.effects-wrap {
+  position: relative;
+  width: calc(100% + 2 * var(--effects-chip-padding-inline));
+  margin-inline: calc(-1 * var(--effects-chip-padding-inline));
+}
+
+.effects {
+  background: transparent;
+  border: var(--border-width) solid var(--ink);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* Header + 3 chip rows — matches previous non-scrolling footprint */
+  max-height: calc((var(--font-size-body) + 16px * var(--scale) + var(--border-width)) * 4);
+  width: 100%;
+}
+
 .effects-header {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(calc(56px * var(--scale)), 0.58fr) minmax(0, 1.42fr);
   gap: 0;
@@ -183,7 +214,40 @@ body {
   font-weight: 700;
   line-height: 1;
   color: var(--ink);
+  background: var(--parchment);
   border-bottom: var(--border-width) solid var(--ink);
+}
+
+.effects-list {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.effects-scroll-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: calc(6px * var(--scale));
+  color: var(--ink-faded);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.effects-wrap.has-more .effects-scroll-hint {
+  opacity: 1;
+}
+
+.effects-scroll-hint svg {
+  display: block;
+  width: calc(14px * var(--scale));
+  height: calc(8px * var(--scale));
 }
 
 .effects-header-name,
@@ -217,11 +281,12 @@ body {
   position: absolute;
   top: var(--card-padding-bottom);
   left: var(--card-padding-inline);
-  right: var(--card-padding-inline);
+  right: calc(var(--card-padding-inline) - var(--effects-chip-padding-inline));
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   gap: calc(12px * var(--scale));
+  z-index: 2;
 }
 
 .card-meta {
@@ -241,19 +306,16 @@ body {
   white-space: nowrap;
 }
 
-.product-index {
+.card-logo {
   flex-shrink: 0;
-}
-
-.effects {
-  background: transparent;
-  border: var(--border-width) solid var(--ink);
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  width: calc(100% + 2 * var(--effects-chip-padding-inline));
-  margin-inline: calc(-1 * var(--effects-chip-padding-inline));
+  width: calc(117.6px * var(--scale));
+  aspect-ratio: 869 / 565;
+  height: auto;
+  display: block;
+  background-color: var(--ink);
+  -webkit-mask: url("logo/village-flower-logo.svg") center / contain no-repeat;
+  mask: url("logo/village-flower-logo.svg") center / contain no-repeat;
+  margin-block: calc((var(--font-size-body) - (117.6px * 565 / 869 * var(--scale))) / 2);
 }
 
 .terpene-chip {

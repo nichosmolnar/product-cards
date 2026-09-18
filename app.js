@@ -158,7 +158,7 @@ const CHEMICAL_META = {
     commonName: 'Terpinolene',
     flavor: 'piney',
     scent: 'floral',
-    effects: ['uplifting', 'sleep'],
+    effects: ['mood-boosting', 'sleep'],
   },
   'trans-beta-farnesene': {
     commonName: 'Farnesene',
@@ -209,8 +209,6 @@ const LABEL_PAD_X = s(8);
 const LABEL_PAD_Y = s(5);
 const LABEL_TEXT_HEIGHT = s(17);
 const LUMINANCE_THRESHOLD = 0.45;
-const MAX_CHIPS = 3;
-
 // --- Utilities ---
 
 function s(value) {
@@ -671,6 +669,47 @@ function sortedTerpenes(notes) {
     .sort((a, b) => b.value - a.value);
 }
 
+function uniqueInOrder(values) {
+  const seen = new Set();
+  const result = [];
+  for (const value of values) {
+    if (!value) continue;
+    const key = String(value).toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    result.push(value);
+  }
+  return result;
+}
+
+function formatList(items) {
+  if (items.length === 0) return '';
+  if (items.length === 1) return items[0];
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
+}
+
+function buildTerpeneDescription(terpenes) {
+  const flavors = [];
+  const effects = [];
+
+  for (const terpene of terpenes.slice(0, 3)) {
+    const meta = getChemicalMeta(terpene.name);
+    if (!meta) continue;
+    flavors.push(meta.flavor);
+    effects.push(meta.effects?.[0]);
+  }
+
+  const uniqueFlavors = uniqueInOrder(flavors);
+  const uniqueEffects = uniqueInOrder(effects);
+
+  if (!uniqueFlavors.length || !uniqueEffects.length) {
+    return '';
+  }
+
+  return `This strain has ${formatList(uniqueFlavors)} scents, with ${formatList(uniqueEffects)} effects from dominant terpenes.`;
+}
+
 function createChipElement({ name }) {
   const slug = chemicalSlug(name);
   const meta = getChemicalMeta(name);
@@ -707,16 +746,40 @@ function createEffectsHeader() {
   return header;
 }
 
+function updateEffectsScrollHint(listEl) {
+  const wrap = listEl.closest('.effects-wrap');
+  if (!wrap) return;
+  const remaining = listEl.scrollHeight - listEl.scrollTop - listEl.clientHeight;
+  wrap.classList.toggle('has-more', remaining > 1);
+}
+
+function bindEffectsScrollHint(listEl) {
+  const update = () => updateEffectsScrollHint(listEl);
+  listEl.addEventListener('scroll', update, { passive: true });
+  requestAnimationFrame(update);
+}
+
 function renderTerpenesEffects(card, product, terpeneChart) {
+  const terpenes = sortedTerpenes(product.totalTerpenes?.notes);
+  const descriptionEl = card.querySelector('.product-description');
+  if (descriptionEl) {
+    descriptionEl.textContent = buildTerpeneDescription(terpenes);
+  }
+
   const effectsEl = card.querySelector('.effects');
   if (!effectsEl) return;
 
-  const terpenes = sortedTerpenes(product.totalTerpenes?.notes);
-  effectsEl.replaceChildren(createEffectsHeader());
+  const listEl = document.createElement('div');
+  listEl.className = 'effects-list';
 
-  if (!terpenes.length) return;
+  effectsEl.replaceChildren(createEffectsHeader(), listEl);
 
-  for (const terpene of terpenes.slice(0, MAX_CHIPS)) {
+  if (!terpenes.length) {
+    updateEffectsScrollHint(listEl);
+    return;
+  }
+
+  for (const terpene of terpenes) {
     const chip = createChipElement(terpene);
     const slug = chip.dataset.chem;
 
@@ -727,11 +790,13 @@ function renderTerpenesEffects(card, product, terpeneChart) {
       terpeneChart?.reset();
     });
 
-    effectsEl.appendChild(chip);
+    listEl.appendChild(chip);
   }
+
+  bindEffectsScrollHint(listEl);
 }
 
-function createStrainCard(fileName, product, index, total) {
+function createStrainCard(fileName, product, index) {
   const card = document.createElement('article');
   card.className = 'strain-card box';
   card.dataset.file = fileName;
@@ -754,7 +819,7 @@ function createStrainCard(fileName, product, index, total) {
   card.innerHTML = `
     <div class="card-header">
       <div class="card-meta product-totals">${totalsLine}</div>
-      <div class="card-meta product-index">${index}/${total}</div>
+      <span class="card-logo" role="img" aria-label="Village Flower"></span>
     </div>
     <div class="graphic">
       <div class="flower-wrap">
@@ -779,11 +844,20 @@ function createStrainCard(fileName, product, index, total) {
     </div>
     <div class="info">
       <div class="product-name">${fileNameToProductName(fileName)}</div>
-      <div class="effects">
-        <div class="effects-header" aria-hidden="true">
-          <span class="effects-header-name">Major Terpenes</span>
-          <span class="effects-header-scent">Scent</span>
-          <span class="effects-header-effect">Effect</span>
+      <p class="product-description"></p>
+      <div class="effects-wrap">
+        <div class="effects">
+          <div class="effects-header" aria-hidden="true">
+            <span class="effects-header-name">Major Terpenes</span>
+            <span class="effects-header-scent">Scent</span>
+            <span class="effects-header-effect">Effect</span>
+          </div>
+          <div class="effects-list"></div>
+        </div>
+        <div class="effects-scroll-hint" aria-hidden="true">
+          <svg viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 1.5L7 6.5L13 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
       </div>
     </div>
@@ -800,10 +874,9 @@ async function init() {
   if (!gallery) return;
 
   const entries = Object.entries(dataByFile);
-  const total = entries.length;
 
   entries.forEach(([fileName, product], i) => {
-    const card = createStrainCard(fileName, product, i + 1, total);
+    const card = createStrainCard(fileName, product, i + 1);
     gallery.appendChild(card);
     const charts = renderCompositionCharts(card, product);
     renderTerpenesEffects(card, product, charts.terpenes);
